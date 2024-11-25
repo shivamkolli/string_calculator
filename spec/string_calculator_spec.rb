@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'utilities/string_calculator'
 
 RSpec.describe Utilities::StringCalculator do
@@ -44,11 +46,11 @@ RSpec.describe Utilities::StringCalculator do
       end
 
       it "returns 0 for the string '1000,1500'" do
-        expect(Utilities::StringCalculator.add('1000,1500')).to eq(3)
+        expect(Utilities::StringCalculator.add('1000,1500')).to eq(0)
       end
 
       it "returns 1000 for the string '1,999,1000'" do
-        expect(Utilities::StringCalculator.add('1000,1500')).to eq(3)
+        expect(Utilities::StringCalculator.add('1,999,1000')).to eq(1000)
       end
     end
 
@@ -65,6 +67,28 @@ RSpec.describe Utilities::StringCalculator do
         expect do
           Utilities::StringCalculator.add('2, -1, -30')
         end.to raise_error('negative numbers not allowed - (-1, -30)')
+      end
+    end
+
+    context 'delimiters' do
+      it "returns 3 for the string '//;\n1;2'" do
+        expect(Utilities::StringCalculator.add("//;\n1;2")).to eq(3)
+      end
+
+      it "returns 6 for the string '//;\n1;2;3,'" do
+        expect(Utilities::StringCalculator.add("//;\n1;2;3")).to eq(6)
+      end
+
+      it "returns 8 for the string '3\n2\n3, 0'" do
+        expect(Utilities::StringCalculator.add("//;3\n2;\n3, 0")).to eq(8)
+      end
+
+      it "returns 6 for the string '//[***]\n1***2***3'" do
+        expect(Utilities::StringCalculator.add("//[***]\n1***2***3")).to eq(6)
+      end
+
+      it "returns 6 for the string '//[*][%]\n1*2%3'" do
+        expect(Utilities::StringCalculator.add("//[*][%]\n1*2%3")).to eq(6)
       end
     end
   end
