@@ -1,7 +1,6 @@
 require 'utilities/string_calculator'
 
 RSpec.describe Utilities::StringCalculator do
-
   describe 'add' do
     it 'returns 0 for empty string' do
       expect(Utilities::StringCalculator.add('')).to eq(0)
@@ -38,6 +37,19 @@ RSpec.describe Utilities::StringCalculator do
         expect(Utilities::StringCalculator.add('78,250')).to eq(328)
       end
     end
-  end
 
+    context 'negative numbers' do
+      it 'raises exception when string contains a negative number' do
+        expect { Utilities::StringCalculator.add('-1') }.to raise_error('negatives not allowed - (-1)')
+      end
+
+      it 'raises exception when string contains single negative number' do
+        expect { Utilities::StringCalculator.add('2, -1') }.to raise_error('negatives not allowed - (-1)')
+      end
+
+      it 'raises exception when string contains multiple negative numbers' do
+        expect { Utilities::StringCalculator.add('2, -1, -30') }.to raise_error('negatives not allowed - (-1, -30)')
+      end
+    end
+  end
 end

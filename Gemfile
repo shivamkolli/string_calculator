@@ -24,6 +24,10 @@ group :development, :test do
   gem 'pry-nav'
 end
 
+group :development do
+  gem 'rubocop', require: false
+end
+
 group :test do
   # Speed up commands on slow machines / big apps [https://github.com/rails/spring]
   gem 'rspec-rails'
