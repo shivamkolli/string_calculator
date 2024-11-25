@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Utilities::StringCalculator.add(input)
 module Utilities
   module StringCalculator
     NUMBER_TOO_BIG = 1000
