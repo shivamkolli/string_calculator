@@ -1,5 +1,8 @@
+# frozen_string_literal: true
+
 module Utilities
   module StringCalculator
+    NUMBER_TOO_BIG = 1000
     class << self
       def add(input)
         return 0 if input.empty?
@@ -7,7 +10,7 @@ module Utilities
         values = extract_values(input)
         raise_error_if_negative_integer(values)
 
-        values.sum
+        addition_of_valid_integers(values)
       end
 
       private
@@ -18,9 +21,15 @@ module Utilities
 
       def raise_error_if_negative_integer(array)
         negatives = array.select(&:negative?)
-        return false if negatives.length == 0
+        return false if negatives.none?
 
-        raise "negatives not allowed - (#{negatives.join(', ')})"
+        raise "negative numbers not allowed - (#{negatives.join(', ')})"
+      end
+
+      def addition_of_valid_integers(array)
+        valid_integers = array.select { |i| i < NUMBER_TOO_BIG }
+
+        valid_integers.sum
       end
     end
   end

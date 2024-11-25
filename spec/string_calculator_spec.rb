@@ -38,17 +38,33 @@ RSpec.describe Utilities::StringCalculator do
       end
     end
 
+    context 'ignore numbers greater than 1000' do
+      it "returns 3 for the string '1,2,1000'" do
+        expect(Utilities::StringCalculator.add('1,2,1000')).to eq(3)
+      end
+
+      it "returns 0 for the string '1000,1500'" do
+        expect(Utilities::StringCalculator.add('1000,1500')).to eq(3)
+      end
+
+      it "returns 1000 for the string '1,999,1000'" do
+        expect(Utilities::StringCalculator.add('1000,1500')).to eq(3)
+      end
+    end
+
     context 'negative numbers' do
       it 'raises exception when string contains a negative number' do
-        expect { Utilities::StringCalculator.add('-1') }.to raise_error('negatives not allowed - (-1)')
+        expect { Utilities::StringCalculator.add('-1') }.to raise_error('negative numbers not allowed - (-1)')
       end
 
       it 'raises exception when string contains single negative number' do
-        expect { Utilities::StringCalculator.add('2, -1') }.to raise_error('negatives not allowed - (-1)')
+        expect { Utilities::StringCalculator.add('2, -1') }.to raise_error('negative numbers not allowed - (-1)')
       end
 
       it 'raises exception when string contains multiple negative numbers' do
-        expect { Utilities::StringCalculator.add('2, -1, -30') }.to raise_error('negatives not allowed - (-1, -30)')
+        expect do
+          Utilities::StringCalculator.add('2, -1, -30')
+        end.to raise_error('negative numbers not allowed - (-1, -30)')
       end
     end
   end
